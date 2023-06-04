@@ -5,41 +5,41 @@ library(pracma)
 
 set.seed(1234)
 
-# Problem parameters
-n = 400          # number of observations
-p = 120           # number of variables
-k = 60            # number of variables with nonzero coefficients
-amplitude = 3.5   # signal amplitude (for noise level = 1)
-q = 0.2        # niveau de controle du FDR
+# Paramètres du problème
+n = 400           # nombres d'observations
+p = 120           # nombres de variables
+k = 60            # nombre de variables réellement dans le modèle
+amplitude = 3.5   # amplitude du signal 
+q = 0.2           # niveau de controle du FDR
 
 
-# Generate the variables from a multivariate normal distribution
+# création de la matrice de design X
 unscaled_X = matrix(rnorm(n*p),n,p)
-X = scale(unscaled_X)
+X = scale(unscaled_X)              #Renormalisation
 
-# Generate the response from a linear model
-nonzero = sample(p, k)
-beta = amplitude * (1:p %in% nonzero) / sqrt(n)
+# création de la réponse Y
+nonzero = sample(p, k)                           # Choix des variables non nulles
+beta = amplitude * (1:p %in% nonzero) / sqrt(n)  # Construction de beta (+ renormalisation ??)
 y.sample = function(X) X %*% beta + rnorm(n)
-y = y.sample(X)
+y = y.sample(X)                                  # Création de Y
 
-invsig = Inverse(t(X) %*% X)
+invsig = Inverse(t(X) %*% X)                     # Calcul de l'inverse de la matrice de Gram
 
-zvalues = invsig %*% t(X) %*% y
+zvalues = invsig %*% t(X) %*% y                  # Calcul des  Z-valeurs
 for ( i in 1 : p) {
   zvalues[i] = zvalues[i]/sqrt(invsig[i,i])}
 
-precision = 100 # taille de la liste de thresholds testés
+precision = 100 # taille de la liste des thresholds testés
 tlist = linspace(0,max(zvalues),precision) #liste des potentiels thresholds
 
 P = function(t) {2*(1-pnorm(t))} # Proba que  |N(0,1)|>t
 
 nbselectBH = function(list,z) 
 { {for (i in 1:length(list) ) (list[i] <- sum(abs(z)>=list[i]))} 
-  list }     # cardinal des coordonnées sélectionnées par BHq pour les t dans tlist
+  list }     # cardinal des coordonnées sélectionnées par BHq (|Z_j |>=t)pour chaque t dans tlist
 
 threshold = function(z,list) { min(which((((p*P(list))/nbselectBH(list,z))<=q))) }#le threshold
-
+# Plus petit t permettant un controle d'uune estimation du FDR
 selectBHq = function(z,list) which(abs(z)>= tlist[threshold(z,list)]) #les hypothèse sélectionnées
 
 result1 = knockoff.filter(X, y, knockoffs = create.fixed, statistic = stat.glmnet_lambdasmax,fdr=q)
