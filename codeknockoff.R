@@ -8,7 +8,7 @@ set.seed(1234)
 # Paramètres du problème
 n = 400           # nombres d'observations
 p = 120           # nombres de variables
-k = 60            # nombre de variables réellement dans le modèle
+k = 60            # nombre de variables d'hypothèses non-nulles
 amplitude = 3.5   # amplitude du signal 
 q = 0.2           # niveau de controle du FDR
 
@@ -55,6 +55,3 @@ print(fdpknockoff)
 
 fdpBHq = fdp(result2)
 print(fdpBHq)
-
-
-
