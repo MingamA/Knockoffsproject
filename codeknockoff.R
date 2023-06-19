@@ -34,7 +34,6 @@ listfdpBHq = c()
 listpowerknockoffplus = c()
 listpowerknockoff = c()
 listpowerBHq = c()
-startime = Sys.time()
 for (i in 1:N) {
   # création de la matrice de design X
   unscaled_X = matrix(rnorm(n*p),n,p)
@@ -65,10 +64,17 @@ for (i in 1:N) {
   listpowerknockoff = c(listpowerknockoff,power(result1bis$selected))
   listpowerBHq = c(listpowerBHq, power(result2))}
 
-print(mean(listfdpknockoffplus))
-print(mean(listfdpknockoff))
-print(mean(listfdpBHq))
-print(mean(listpowerknockoffplus))
-print(mean(listpowerknockoff))
-print(mean(listpowerBHq))
-print(endtime-startime)
+print(mean(listfdpknockoffplus))                                          #Estimateur du FDR knockoff+
+print(mean((listfdpknockoffplus-mean(listfdpknockoffplus))^2)*N/(N-1))    #Variance empirique 
+print(mean(listfdpknockoff))                                              #Estimateur du FDR knockoff
+print(mean((listfdpknockoff-mean(listfdpknockoff))^2)*N/(N-1))            #Variance empirique
+print(mean(listfdpBHq))                                                   #Estimateur BHq
+print(mean((listfdpBHq-mean(listfdpBHq))^2)*N/(N-1))                      #Variance empirique
+print(mean(listpowerknockoffplus))                                        #Puissance knockoff+
+print(mean((listpowerknockoffplus-mean(listpowerknockoffplus))^2)*N/(N-1))#Variance empirique
+print(mean(listpowerknockoff))                                            #Puissance knockoff
+print(mean((listpowerknockoff-mean(listpowerknockoff))^2)*N/(N-1))        #Variance empirique
+print(mean(listpowerBHq))                                                 #Puissance BHq
+print(mean((listpowerBHq-mean(listpowerBHq))^2)*N/(N-1))                  #Variance empirique
+
+
