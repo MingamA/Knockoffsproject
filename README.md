@@ -1,4 +1,5 @@
-# Knockoffsproject 
-Code réaliser dans le cadre du TER M1 à l'Université Paris-Saclay par Terence Viaud et Aurèle Mingam, encadrés par Guillermo Durand et Gilles Blanchard.
-## Objectif du code
-Reproduire les résultats des simulations figurant dans l'article de Barber et Candès en 2015 afin de comparer les méthodes de Benjamini et Hochberg, knockoff et knockoff+.
+# Project Knockoff
+Code developed as part of the M1 TER at the University of Paris-Saclay by Terence Viaud and Aurèle Mingam, supervised by Guillermo Durand and Gilles Blanchard.
+
+## Objective of the code
+To replicate the results of the simulations presented in the article by Barber and Candès in 2015 in order to compare the methods of Benjamini and Hochberg, knockoff, and knockoff+.
